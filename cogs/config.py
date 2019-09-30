@@ -755,13 +755,17 @@ __Subcommands__
 - {ctx.prefix}rank @user: Mention a user to check that user's level and points for this server.
 - {ctx.prefix}rank help: Shows this message.
 - {ctx.prefix}rank lb: Shows a leaderboard of the highest points that users have in the server.
-            """)
+            """) #ew. code better than mine
         if not option:
-            data = await self.bot.db.rank.find_one({"id": ctx.guild.id})
-            user = data["data"]["data"][str(ctx.author.id)]
-            em = discord.Embed(color=ctx.author.color, title="User Rank")
-            em.description = f"""
+            data = await self.bot.db.rank.find_one({"id": str(ctx.guild.id)}) #Note: Change all DB entries in this db to strings.
+            try:
+             user = data["data"]["data"][str(ctx.author.id)]
+             em = discord.Embed(color=ctx.author.color, title="User Rank")
+             em.description = f"""
 Level **{user["level"]}**
+            except:
+                await ctx.send("No rank data found. Stop being shy and chat you rart!")
+                
 
 Total Points: **{user["points"]}/{user["next"]}**
             """
